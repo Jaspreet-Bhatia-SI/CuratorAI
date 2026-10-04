@@ -77,12 +77,8 @@ export default function Library() {
     const toastId = toast.loading(`Downloading ${file.title} to device...`);
     
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(file.url, {
-        headers: {
-          ...(session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {})
-        }
-      });
+      // Direct fetch without Authorization header to avoid CORS preflight failures on third-party URLs
+      const res = await fetch(file.url);
       if (!res.ok) throw new Error("Failed to fetch from cloud");
       
       const blob = await res.blob();

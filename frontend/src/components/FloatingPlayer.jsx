@@ -20,8 +20,8 @@ export default function FloatingPlayer() {
     let url = null;
 
     const loadTrack = async () => {
-      if (currentTrack.source === 'server') {
-        url = `/api/stream/${encodeURIComponent(currentTrack.filename)}`;
+      if (currentTrack.source === 'server' || currentTrack.source === 'cloud') {
+        url = currentTrack.url || `/api/stream/${encodeURIComponent(currentTrack.filename)}`;
         if (active) setAudioUrl(url);
       } else if (currentTrack.source === 'local') {
         if (currentTrack.blob) {
