@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Curator AI Architecture",
+    "output": "curator-ai-architecture.html",
+    "quality_profile": "standard",
+    "views": [
+      { "id": "pwa-flow", "label": "PWA & Supabase", "focus": ["user", "frontend", "supabase"], "note": "Frontend communicates directly with Supabase for Auth and Library management." },
+      { "id": "ai-flow", "label": "AI Generation & Caching", "focus": ["frontend", "backend", "redis", "gemini", "youtube"], "note": "Backend proxies BYOK requests to Gemini and caches them in Redis." }
+    ]
+  },
+  "components": [
+    { "id": "user", "type": "external", "label": "User", "sublabel": "Browser / PWA", "pos": [50, 150], "size": [120, 60] },
+    { "id": "frontend", "type": "frontend", "label": "React PWA", "sublabel": "Vite + Tailwind", "pos": [280, 150], "size": [140, 60], "tag": "BYOK Storage" },
+    { "id": "supabase", "type": "database", "label": "Supabase", "sublabel": "Auth / PG / Storage", "pos": [280, 300], "size": [140, 60] },
+    { "id": "backend", "type": "backend", "label": "FastAPI Server", "sublabel": "Python Backend", "pos": [550, 150], "size": [140, 60] },
+    { "id": "redis", "type": "database", "label": "Redis", "sublabel": "Query Cache", "pos": [550, 300], "size": [140, 60] },
+    { "id": "gemini", "type": "external", "label": "AI Providers", "sublabel": "Gemini / Groq", "pos": [800, 100], "size": [140, 60] },
+    { "id": "youtube", "type": "external", "label": "Media Source", "sublabel": "YouTube via yt-dlp", "pos": [800, 200], "size": [140, 60] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "user", "to": "frontend", "label": "HTTPS" },
+    { "id": "c2", "from": "frontend", "to": "supabase", "label": "Supabase JS (Auth/DB)", "fromSide": "bottom", "toSide": "top", "labelDy": 30 },
+    { "id": "c3", "from": "frontend", "to": "backend", "label": "REST API" },
+    { "id": "c4", "from": "backend", "to": "redis", "label": "Cache Check", "fromSide": "bottom", "toSide": "top", "labelDy": 30 },
+    { "id": "c5", "from": "backend", "to": "gemini", "label": "LLM API (BYOK)", "fromSide": "right", "toSide": "left" },
+    { "id": "c6", "from": "backend", "to": "youtube", "label": "Search/Metadata", "fromSide": "right", "toSide": "left" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Bring Your Own Key (BYOK)", "items": ["API keys are stored exclusively in the browser's IndexedDB/LocalStorage", "Keys are sent securely via headers to the Python backend to execute prompts."] },
+    { "dot": "emerald", "title": "PWA Offline Capabilities", "items": ["Downloaded media is converted to blobs and cached locally", "App uses Service Workers to function completely offline"] }
+  ]
+}
