@@ -24,19 +24,21 @@ if SUPABASE_URL and SUPABASE_KEY:
 else:
     supabase_client = None
 
-security = HTTPBearer()
+security = HTTPBearer(auto_error=False)
 
 def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    if not credentials:
+        return {"email": "anonymous"}
     if not supabase_client:
-        raise HTTPException(status_code=500, detail="Authentication service not configured")
+        return {"email": "anonymous"}
     token = credentials.credentials
     try:
         user_res = supabase_client.auth.get_user(token)
         if not user_res or not user_res.user:
-            raise HTTPException(status_code=401, detail="Invalid token")
+            return {"email": "anonymous"}
         return user_res.user
     except Exception:
-        raise HTTPException(status_code=401, detail="Authentication failed")
+        return {"email": "anonymous"}
 
 # Configure Rate Limiter
 limiter = Limiter(key_func=get_remote_address)
@@ -113,7 +115,7 @@ async def generate_roadmap(request: Request, req: RoadmapRequest, user=Depends(g
     except Exception as e:
         import traceback
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 

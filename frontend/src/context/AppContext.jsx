@@ -97,11 +97,13 @@ export function AppProvider({ children }) {
           body: JSON.stringify({ query: query, user_email: user?.email || null }),
         });
         if (!res.ok) {
-          let errStr = "Failed to fetch roadmap";
+          let errStr = `Failed to fetch roadmap (Status: ${res.status})`;
           try {
             const errData = await res.json();
             errStr = errData.detail || errStr;
-          } catch (e) {}
+          } catch (e) {
+            errStr += " - The backend server might be offline or Nginx is misconfigured.";
+          }
           throw new Error(errStr);
         }
 
