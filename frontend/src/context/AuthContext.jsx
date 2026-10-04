@@ -30,6 +30,13 @@ export function AuthProvider({ children }) {
       setUser(session?.user ?? null);
       if (session?.user) {
         syncUserProfile(session.user);
+        const meta = session.user.user_metadata;
+        if (meta?.gemini_key) {
+          localStorage.setItem('gemini_key', meta.gemini_key);
+        }
+        if (meta?.groq_key) {
+          localStorage.setItem('groq_key', meta.groq_key);
+        }
       }
       setLoading(false);
     });
@@ -40,6 +47,15 @@ export function AuthProvider({ children }) {
       setUser(session?.user ?? null);
       if (session?.user) {
         syncUserProfile(session.user);
+        
+        // SYNC API KEYS TO LOCALSTORAGE
+        const meta = session.user.user_metadata;
+        if (meta?.gemini_key) {
+          localStorage.setItem('gemini_key', meta.gemini_key);
+        }
+        if (meta?.groq_key) {
+          localStorage.setItem('groq_key', meta.groq_key);
+        }
       }
     });
 

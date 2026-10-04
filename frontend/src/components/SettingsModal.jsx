@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { useAppContext } from '../context/AppContext';
+import { supabase } from '../utils/supabase';
 
 export default function SettingsModal() {
   const { saveAiConfig } = useAuth();
@@ -41,6 +42,21 @@ const handleSave = async () => {
     // Save locally
     localStorage.setItem('gemini_key', geminiKey);
     localStorage.setItem('groq_key', groqKey);
+    
+    // Save to cloud if logged in
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        await supabase.auth.updateUser({
+          data: {
+            gemini_key: geminiKey,
+            groq_key: groqKey
+          }
+        });
+      }
+    } catch (e) {
+      console.error("Failed to sync keys to cloud", e);
+    }
     
     // Set actual AI Config for the requests
     const activeProvider = groqKey ? 'groq' : 'gemini';
