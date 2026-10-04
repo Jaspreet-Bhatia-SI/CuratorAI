@@ -25,18 +25,18 @@ export default function About() {
             Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-blue-400">Jaspreet Bhatia</span>
           </h1>
           <p className="text-xl text-gray-400 leading-relaxed">
-            I am a Full-Stack AI Developer and Cloud Engineer specializing in artificial intelligence, modern web architectures, and scalable cloud solutions under my studio brand, <strong>JB AI</strong>.
+            I am a Full-Stack AI Developer and Cloud Engineer specializing in artificial intelligence, modern web architectures, and scalable cloud solutions under my studio brand, <strong>JBSI</strong>.
           </p>
           <div className="flex gap-4 pt-4">
             <a 
-              href="https://github.com/Jaspreet-Bhatia-AI" 
+              href="https://github.com/Jaspreet-Bhatia-SI" 
               target="_blank" rel="noreferrer"
               className="bg-black/10 dark:bg-surface-container-lowest/10 hover:bg-black/20 dark:bg-surface-container-lowest/20 text-on-surface dark:text-white px-6 py-3 rounded-full font-medium transition-colors border border-white/5"
             >
               GitHub Profile
             </a>
             <a 
-              href="https://linkedin.com/in/jaspreet-bhatia-ai" 
+              href="https://linkedin.com/in/jaspreet-bhatia-si" 
               target="_blank" rel="noreferrer"
               className="bg-google-purple/20 hover:bg-google-purple/30 text-google-purple border border-google-purple/30 px-6 py-3 rounded-full font-medium transition-colors"
             >
@@ -48,7 +48,7 @@ export default function About() {
       {/* Project Info & Contact */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-16">
         <div className="space-y-6">
-          <h2 className="text-3xl font-semibold">Engineering Curator by JB AI</h2>
+          <h2 className="text-3xl font-semibold">Engineering Curator by JBSI</h2>
           <p className="text-gray-400 leading-relaxed">
             Curator is an autonomous media platform built to eliminate internet noise. Under the hood, it utilizes <strong>Retrieval-Augmented Generation (RAG)</strong> by performing real-time internet searches to bypass AI knowledge cutoffs. The robust backend integrates localized Node.js environments and <strong>FFmpeg</strong> processing to bypass complex JavaScript anti-bot algorithms, ensuring seamless media extraction.
           </p>

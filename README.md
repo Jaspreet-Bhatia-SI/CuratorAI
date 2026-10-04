@@ -21,7 +21,7 @@ If you want to edit the code and run the app locally:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/Jaspreet-Bhatia-AI/CuratorAI.git
+git clone https://github.com/Jaspreet-Bhatia-SI/CuratorAI.git
 cd CuratorAI
 
 # 2. Setup Frontend
@@ -40,7 +40,7 @@ npm run dev
   <img alt="Curator AI Architecture Diagram" src="docs/architecture/curator-architecture.visual-check.1440x900.light.png" width="100%">
 </picture>
 
-*(For an interactive, animated version of this map, **[click here to view the live interactive preview](https://htmlpreview.github.io/?https://github.com/Jaspreet-Bhatia-AI/CuratorAI/blob/main/docs/architecture/curator-architecture.html)**).*
+*(For an interactive, animated version of this map, **[click here to view the live interactive preview](https://htmlpreview.github.io/?https://github.com/Jaspreet-Bhatia-SI/CuratorAI/blob/main/docs/architecture/curator-architecture.html)**).*
 - **Frontend UI:** React + Vite + TailwindCSS (Material 3 Design)
 - **PWA Integration:** `vite-plugin-pwa` with IndexedDB offline storage
 - **Database/Auth/Storage:** Supabase (PostgreSQL)
