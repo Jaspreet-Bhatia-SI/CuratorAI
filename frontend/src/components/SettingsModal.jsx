@@ -52,15 +52,13 @@ const handleSave = async () => {
         await supabase.auth.updateUser({
           data: {
             gemini_key: geminiKey,
-            groq_key: groqKey,
-            curator_pro: isPro
+            groq_key: groqKey
           }
         });
       }
     } catch (e) {
       console.error("Failed to sync keys to cloud", e);
     }
-    localStorage.setItem('curator_pro', isPro);
     
     // Set actual AI Config for the requests
     const activeProvider = groqKey ? 'groq' : 'gemini';
@@ -210,24 +208,6 @@ const handleCheckUpdate = () => {
               </div>
             </div>
 
-            <div className="h-px w-full bg-outline-variant/30"></div>
-
-            {/* Premium Tier Toggle */}
-            <div className="flex flex-col gap-2">
-              <label className="font-label-md text-label-md text-on-surface flex items-center justify-between">
-                <span className="flex items-center gap-2">Curator Pro <span className="material-symbols-outlined text-[16px] text-amber-500">workspace_premium</span></span>
-              </label>
-              <div className="p-4 rounded-xl bg-gradient-to-r from-amber-500/10 to-transparent border border-amber-500/20 flex justify-between items-center">
-                <div className="flex flex-col">
-                  <span className="font-semibold text-on-surface">Enable Pro Tier</span>
-                  <span className="text-xs text-on-surface-variant">Bypass BYOK and use Master Server keys</span>
-                </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" className="sr-only peer" checked={isPro} onChange={(e) => setIsPro(e.target.checked)} />
-                  <div className="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
-                </label>
-              </div>
-            </div>
 
           </div>
           

@@ -106,11 +106,6 @@ def extract_url_to_roadmap(url: str):
         }
 
 def generate_roadmap_json(user_query: str, provider: str = "groq", api_key: str = ""):
-    if api_key == "PRO_TIER":
-        import os
-        api_key = os.getenv("GROQ_API_KEY", "")
-        if not api_key:
-            raise Exception("Pro Tier is enabled but server is missing MASTER GROQ_API_KEY")
     query_lower = user_query.strip().lower()
     try:
         if redis_client:
