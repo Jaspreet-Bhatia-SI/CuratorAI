@@ -6,15 +6,15 @@ import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import Studio from './pages/Studio';
 import History from './pages/History';
-import Library from './pages/Library';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsOfService from './pages/TermsOfService';
+const Library = React.lazy(() => import('./pages/Library'));
+const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
+const TermsOfService = React.lazy(() => import('./pages/TermsOfService'));
 import CookieConsent from './components/CookieConsent';
 import Footer from './components/Footer';
-import NotFound from './pages/NotFound';
+const NotFound = React.lazy(() => import('./pages/NotFound'));
 import { Toaster } from 'react-hot-toast';
 import { AppProvider } from './context/AppContext';
-import Profile from "./pages/Profile";
+const Profile = React.lazy(() => import("./pages/Profile"));
 import { AuthProvider, useAuth } from './context/AuthContext';
 import SettingsModal from './components/SettingsModal';
 import AuthModal from './components/AuthModal';
@@ -41,7 +41,8 @@ function LayoutEngine() {
       
       <main className="w-full pt-[72px] min-h-screen flex flex-col relative z-0">
         <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>              
+          <React.Suspense fallback={<div className="flex h-[50vh] items-center justify-center"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>}>
+            <Routes location={location} key={location.pathname}>              
             <Route path="/" element={<Home />} />
             <Route path="/studio" element={<Navigate to="/" replace />} />
             <Route path="/roadmap" element={<Navigate to="/" replace />} />
@@ -51,6 +52,7 @@ function LayoutEngine() {
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </React.Suspense>
         </AnimatePresence>
         <Footer />
       </main>

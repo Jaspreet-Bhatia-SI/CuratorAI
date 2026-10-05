@@ -24,7 +24,7 @@ export default function About() {
           <h1 className="text-5xl font-bold tracking-tight">
             Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-blue-400">Jaspreet Bhatia</span>
           </h1>
-          <p className="text-xl text-gray-400 leading-relaxed">
+          <p className="text-xl text-on-surface-variant leading-relaxed">
             I am a Full-Stack AI Developer and Cloud Engineer specializing in artificial intelligence, modern web architectures, and scalable cloud solutions under my studio brand, <strong>JBSI</strong>.
           </p>
           <div className="flex gap-4 pt-4">
@@ -49,10 +49,10 @@ export default function About() {
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-16">
         <div className="space-y-6">
           <h2 className="text-3xl font-semibold">Engineering Curator by JBSI</h2>
-          <p className="text-gray-400 leading-relaxed">
+          <p className="text-on-surface-variant leading-relaxed">
             Curator is an autonomous media platform built to eliminate internet noise. Under the hood, it utilizes <strong>Retrieval-Augmented Generation (RAG)</strong> by performing real-time internet searches to bypass AI knowledge cutoffs. The robust backend integrates localized Node.js environments and <strong>FFmpeg</strong> processing to bypass complex JavaScript anti-bot algorithms, ensuring seamless media extraction.
           </p>
-          <ul className="space-y-4 text-gray-400">
+          <ul className="space-y-4 text-on-surface-variant">
             <li className="flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-google-purple"></span> <strong>Frontend:</strong> React, Tailwind CSS & Framer Motion 3D
             </li>
@@ -69,7 +69,7 @@ export default function About() {
           <h2 className="text-2xl font-semibold mb-6">Get in touch</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">Your Name</label>
+              <label className="block text-sm font-medium text-on-surface-variant mb-2">Your Name</label>
               <input 
                 type="text" 
                 required
@@ -80,7 +80,7 @@ export default function About() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">Message</label>
+              <label className="block text-sm font-medium text-on-surface-variant mb-2">Message</label>
               <textarea 
                 required
                 value={formData.message}
@@ -95,7 +95,7 @@ export default function About() {
             >
               Send Message
             </button>
-            <p className="text-center text-xs text-gray-500 mt-4">
+            <p className="text-center text-xs text-outline mt-4">
               Directly connects to code4youbuddy@gmail.com
             </p>
           </form>
