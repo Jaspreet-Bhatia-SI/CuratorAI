@@ -86,12 +86,13 @@ export function AppProvider({ children }) {
 
         const { data: { session } } = await supabase.auth.getSession();
         
+        const isPro = localStorage.getItem('curator_pro') === 'true';
         const res = await fetch('/api/generate-roadmap', {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            'X-AI-Provider': finalProvider,
-            'X-AI-Key': finalKey.trim(),
+            'X-AI-Provider': isPro ? 'groq' : finalProvider,
+            'X-AI-Key': isPro ? 'PRO_TIER' : finalKey.trim(),
             ...(session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {})
           },
           body: JSON.stringify({ query: query, user_email: user?.email || null }),

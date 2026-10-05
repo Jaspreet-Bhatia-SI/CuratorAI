@@ -106,6 +106,11 @@ def extract_url_to_roadmap(url: str):
         }
 
 def generate_roadmap_json(user_query: str, provider: str = "groq", api_key: str = ""):
+    if api_key == "PRO_TIER":
+        import os
+        api_key = os.getenv("GROQ_API_KEY", "")
+        if not api_key:
+            raise Exception("Pro Tier is enabled but server is missing MASTER GROQ_API_KEY")
     query_lower = user_query.strip().lower()
     try:
         if redis_client:
@@ -360,7 +365,7 @@ def search_youtube(query: str, search_type: str = "education", original_query: s
         "no_warnings": True,
         "extract_flat": True,
         "noplaylist": True,
-        "cookiesfrombrowser": ("brave",),
+        ,
         "extractor_args": {"youtube": ["player_client=ios,web"]}
     }
     ydl_opts_full = {
@@ -481,8 +486,7 @@ def download_video(url: str, output_dir: str, format_type: str = "video_high", t
             "quiet": True,
             "no_warnings": True,
             "progress_hooks": [get_progress_hook(task_id)] if task_id else [],
-            "extractor_args": {"youtube": ["player_client=ios,web"]},
-            "cookiesfrombrowser": ("brave",)
+            "extractor_args": {"youtube": ["player_client=ios,web"]}
         }
     elif format_type == "video_fast":
         ydl_opts = {
@@ -492,8 +496,7 @@ def download_video(url: str, output_dir: str, format_type: str = "video_high", t
             "quiet": True,
             "no_warnings": True,
             "progress_hooks": [get_progress_hook(task_id)] if task_id else [],
-            "extractor_args": {"youtube": ["player_client=ios,web"]},
-            "cookiesfrombrowser": ("brave",)
+            "extractor_args": {"youtube": ["player_client=ios,web"]}
         }
     else:
         # video_high
@@ -504,27 +507,31 @@ def download_video(url: str, output_dir: str, format_type: str = "video_high", t
             "quiet": True,
             "no_warnings": True,
             "progress_hooks": [get_progress_hook(task_id)] if task_id else [],
-            "extractor_args": {"youtube": ["player_client=ios,web"]},
-            "cookiesfrombrowser": ("brave",)
+            "extractor_args": {"youtube": ["player_client=ios,web"]}
         }
     
     if node_path:
         ydl_opts["js_runtimes"] = {'node': {'binary': node_path}}
         
-    try:
-        with yt(ydl_opts) as yd:
-            info = yd.extract_info(url, download=True)
-            filename = yd.prepare_filename(info)
-            base, _ = os.path.splitext(filename)
-            
-            if format_type == "audio" and os.path.exists(f"{base}.mp3"):
-                return f"{base}.mp3"
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            with yt(ydl_opts) as yd:
+                info = yd.extract_info(url, download=True)
+                filename = yd.prepare_filename(info)
+                base, _ = os.path.splitext(filename)
                 
-            if os.path.exists(f"{base}.mp4"):
-                return f"{base}.mp4"
-            if os.path.exists(f"{base}.mkv"):
-                return f"{base}.mkv"
-            return filename
-    except Exception as e:
-        print(f"Download failed for {url}: {e}")
-        return None
+                if format_type == "audio" and os.path.exists(f"{base}.mp3"):
+                    return f"{base}.mp3"
+                    
+                if os.path.exists(f"{base}.mp4"):
+                    return f"{base}.mp4"
+                if os.path.exists(f"{base}.mkv"):
+                    return f"{base}.mkv"
+                return filename
+        except Exception as e:
+            print(f"Download failed for {url} on attempt {attempt+1}: {e}")
+            if attempt == max_retries - 1:
+                return None
+            import time
+            time.sleep(3)

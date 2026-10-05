@@ -3,6 +3,8 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { useAppContext } from '../context/AppContext';
 import { supabase } from '../utils/supabase';
+import { clearLibrary } from '../utils/db';
+import { useEffect } from 'react';
 
 export default function SettingsModal() {
   const { saveAiConfig } = useAuth();
@@ -50,13 +52,15 @@ const handleSave = async () => {
         await supabase.auth.updateUser({
           data: {
             gemini_key: geminiKey,
-            groq_key: groqKey
+            groq_key: groqKey,
+            curator_pro: isPro
           }
         });
       }
     } catch (e) {
       console.error("Failed to sync keys to cloud", e);
     }
+    localStorage.setItem('curator_pro', isPro);
     
     // Set actual AI Config for the requests
     const activeProvider = groqKey ? 'groq' : 'gemini';
@@ -107,7 +111,7 @@ const handleCheckUpdate = () => {
               <span className="material-symbols-outlined text-primary text-[22px]" aria-hidden="true">api</span>
             </div>
             <div className="flex flex-col">
-              <h2 id="settings-modal-title" className="font-headline-sm text-headline-sm text-on-surface">AI Engine Configuration</h2>
+              <h2 id="settings-modal-title" className="font-headline-sm text-headline-sm text-on-surface">App Settings</h2>
               <span className="font-label-sm text-label-sm text-on-surface-variant">BYOK (Bring Your Own Key) Architecture</span>
             </div>
           </div>
@@ -183,6 +187,45 @@ const handleCheckUpdate = () => {
                   placeholder="AIza..." 
                   className="w-full bg-surface-container-low border border-outline-variant rounded-xl py-3 pl-10 pr-12 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary text-on-surface font-mono text-sm transition-all"
                 />
+              </div>
+            </div>
+
+
+            <div className="h-px w-full bg-outline-variant/30"></div>
+            
+            {/* Storage Manager */}
+            <div className="flex flex-col gap-2">
+              <label className="font-label-md text-label-md text-on-surface">Offline Storage Manager</label>
+              <div className="p-4 rounded-xl bg-surface-container border border-outline-variant/30 flex flex-col gap-3">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-on-surface-variant">IndexedDB Usage (Media)</span>
+                  <span className="font-mono text-primary font-bold">{(storageUsed / 1024 / 1024).toFixed(2)} MB</span>
+                </div>
+                <div className="w-full bg-surface-container-highest rounded-full h-2.5">
+                  <div className="bg-primary h-2.5 rounded-full" style={{ width: `${Math.min((storageUsed / (storageQuota || 1)) * 100, 100)}%` }}></div>
+                </div>
+                <button onClick={handleClearStorage} className="mt-2 px-4 py-2 bg-error/10 text-error hover:bg-error/20 rounded-lg text-sm font-semibold transition-colors w-fit self-end">
+                  Clear Offline Data
+                </button>
+              </div>
+            </div>
+
+            <div className="h-px w-full bg-outline-variant/30"></div>
+
+            {/* Premium Tier Toggle */}
+            <div className="flex flex-col gap-2">
+              <label className="font-label-md text-label-md text-on-surface flex items-center justify-between">
+                <span className="flex items-center gap-2">Curator Pro <span className="material-symbols-outlined text-[16px] text-amber-500">workspace_premium</span></span>
+              </label>
+              <div className="p-4 rounded-xl bg-gradient-to-r from-amber-500/10 to-transparent border border-amber-500/20 flex justify-between items-center">
+                <div className="flex flex-col">
+                  <span className="font-semibold text-on-surface">Enable Pro Tier</span>
+                  <span className="text-xs text-on-surface-variant">Bypass BYOK and use Master Server keys</span>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="sr-only peer" checked={isPro} onChange={(e) => setIsPro(e.target.checked)} />
+                  <div className="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                </label>
               </div>
             </div>
 

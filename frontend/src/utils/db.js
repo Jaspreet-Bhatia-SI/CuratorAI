@@ -48,3 +48,14 @@ export const removeSongFromLibrary = async (id) => {
     request.onerror = (e) => reject(e.target.error);
   });
 };
+
+export const clearLibrary = async () => {
+  const db = await initDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction([STORE_NAME], 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.clear();
+    request.onsuccess = () => resolve();
+    request.onerror = (e) => reject(e.target.error);
+  });
+};

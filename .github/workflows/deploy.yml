@@ -1,58 +1,22 @@
-name: Deploy Curator AI to VPS
+name: Deploy to EC2
 
 on:
   push:
     branches:
       - main
-      - master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Build Frontend
-        run: |
-          cd frontend
-          echo "VITE_SUPABASE_URL=https://zcbulmwddycalcxuaykz.supabase.co" > .env
-          echo "VITE_SUPABASE_ANON_KEY=sb_publishable_YlbR6VdBm0hAH7N1oHowTg_eGwDa8F7" >> .env
-          npm install
-          npm run build
-
-      - name: Sync Backend and Frontend to Server
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          
-          # Use secrets.IP since the secret was named IP instead of HOST
-          HOST_IP="${{ secrets.IP }}"
-          
-          # Sync backend (excluding venv and pycache)
-          rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" --exclude 'venv' --exclude '__pycache__' backend/ ${{ secrets.USERNAME }}@${HOST_IP}:/home/${{ secrets.USERNAME }}/curator-ai/backend/
-          
-          # Sync built frontend (dist)
-          rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" frontend/dist/ ${{ secrets.USERNAME }}@${HOST_IP}:/home/${{ secrets.USERNAME }}/curator-ai/dist/
-
-      - name: Restart Backend and Fix Permissions
+      - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.IP }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /home/${{ secrets.USERNAME }}/curator-ai/backend
-            source venv/bin/activate
-            pip install --no-cache-dir -r requirements.txt
-            pm2 restart curator-backend
-            
-            # Ensure permissions are correct for frontend files
-            sudo chmod -R 755 /home/${{ secrets.USERNAME }}/curator-ai/dist
+            cd ~/CuratorAI || cd ~/curator-ai
+            git pull origin main
+            docker-compose down
+            docker-compose up -d --build
