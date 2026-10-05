@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://api.dicebear.com/7.x/shapes/svg?seed=CuratorAI&backgroundColor=000000" alt="Curator AI Logo" width="120" />
+  <img src="frontend/public/logo512.png" alt="Curator AI Logo" width="120" style="border-radius: 20%;" />
   <h1>Curator AI 🎵📚</h1>
   <p><strong>Transform any topic, artist, or vibe into a structured learning path or a curated music mix in seconds.</strong></p>
 

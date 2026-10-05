@@ -16,9 +16,7 @@ export default function Navbar({ isHome, toggleMobileMenu }) {
         {/* Left side: Logo & Search */}
         <div className="flex items-center gap-4 justify-start">
           <Link to="/" className="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-primary rounded-full pr-2 group shrink-0" aria-label="Go to Home" onClick={() => { if(typeof setRoadmap !== 'undefined') { setRoadmap(null); setSearchQuery(""); } }}>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary shadow-sm group-hover:shadow-md transition-all group-hover:scale-105 group-active:scale-95">
-              <span className="material-symbols-outlined text-[20px]" aria-hidden="true">architecture</span>
-            </div>
+            <img src="/logo192.png" alt="Curator AI Logo" className="w-10 h-10 rounded-xl object-cover shadow-sm group-hover:shadow-md transition-all group-hover:scale-105 group-active:scale-95" />
             <span className="font-headline-sm text-headline-sm text-on-surface tracking-tight hidden sm:inline-block">
               Curator <span className="text-primary font-bold">AI</span>
             </span>

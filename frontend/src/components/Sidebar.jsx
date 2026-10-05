@@ -19,9 +19,7 @@ export default function Sidebar({ isOpen, closeMenu }) {
         {/* Logo Area */}
         <div className="flex items-center justify-between px-6 h-12">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold shadow-sm group-hover:scale-105 transition-transform">
-              <span className="material-symbols-outlined text-[20px]" aria-hidden="true">architecture</span>
-            </div>
+            <img src="/logo192.png" alt="Curator AI Logo" className="w-9 h-9 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform" />
             <span className="font-headline-sm text-headline-sm text-on-surface tracking-tight">
               Curator <span className="text-primary font-bold">AI</span>
             </span>
