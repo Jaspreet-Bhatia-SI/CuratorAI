@@ -114,7 +114,7 @@ export default function Studio() {
 
           <div className="flex flex-col gap-1 bg-surface-container-lowest/50 backdrop-blur-xl rounded-[32px] p-4 shadow-sm border border-outline-variant/20">
             <h3 className="font-label-md text-on-surface-variant px-4 py-2 uppercase tracking-wider">Chapters</h3>
-            {(roadmap?.roadmap_overview || []).map((mod, idx) => (
+            {(roadmap?.curriculum || []).map((item, idx) => (
               <button 
                 key={idx}
                 onClick={() => setActiveChapter(idx)}
@@ -123,10 +123,10 @@ export default function Studio() {
                 <span className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${activeChapter === idx ? 'bg-white/20' : 'bg-surface-container-highest text-on-surface-variant'}`}>
                   {idx + 1}
                 </span>
-                <span className="truncate">{mod.main_topic || mod.title}</span>
+                <span className="truncate">{item.topics_covered?.[0] || item.title || "Track " + (idx + 1)}</span>
               </button>
             ))}
-            {(!roadmap?.roadmap_overview || roadmap.roadmap_overview.length === 0) && (
+            {(!roadmap?.curriculum || roadmap.curriculum.length === 0) && (
               <div className="px-4 py-6 text-center text-on-surface-variant font-body-sm italic opacity-75 animate-pulse">
                 Structuring your content...
               </div>
