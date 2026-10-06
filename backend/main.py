@@ -19,7 +19,7 @@ load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_SECRET_KEY")
 
-if SUPABASE_URL and SUPABASE_KEY:
+if SUPABASE_URL and SUPABASE_URL != "YOUR_SUPABASE_URL" and SUPABASE_KEY and SUPABASE_KEY != "YOUR_SUPABASE_SECRET_KEY":
     supabase_client: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 else:
     supabase_client = None

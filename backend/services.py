@@ -360,7 +360,6 @@ def search_youtube(query: str, search_type: str = "education", original_query: s
         "no_warnings": True,
         "extract_flat": True,
         "noplaylist": True,
-        ,
         "extractor_args": {"youtube": ["player_client=ios,web"]}
     }
     ydl_opts_full = {
